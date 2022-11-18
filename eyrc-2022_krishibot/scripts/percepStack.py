@@ -61,6 +61,10 @@ def img_clbck(img_msg):
 
     ############################### Add your code here #######################################
 
+    bridge = CvBridge()
+    image = bridge.imgmsg_to_cv2(img_msg)
+    
+
     ##########################################################################################
     pose = image_processing(image)
     pub_rgb.publish(str(pose))
@@ -84,7 +88,11 @@ def depth_clbck(depth_msg):
     '''
     depth_val = []
     ############################### Add your code here #######################################
-
+    global pub_depth
+    bridge = CvBridge()
+    image = bridge.imgmsg_to_cv2(depth_msg)
+    cv2.imshow("",image)
+    cv2.waitKey()
     ##########################################################################################
     pub_depth.publish(str(depth_val))
 
@@ -134,8 +142,8 @@ def main():
     #### EDIT YOUR CODE HERE FOR SUBSCRIBING TO OTHER TOPICS AND TO APPLY YOUR ALGORITHM TO PUBLISH #####
 
     rospy.init_node("percepStack", anonymous=True)
-    sub_image_color_1 = rospy.Subscriber("/device_0/sensor_1/Color_0/image/data_1", Image, img_clbck)
-    sub_image_depth_1 = rospy.Subscriber("/device_0/sensor_0/Depth_0/image/data_1", Image, depth_clbck)
+    # sub_image_color_1 = rospy.Subscriber("/device_0/sensor_1/Color_0/image/data_1", Image, img_clbck)
+    sub_image_depth_1 = rospy.Subscriber("/device_0/sensor_0/Depth_0/image/data_3", Image, depth_clbck)
 
 
     pub_rgb = rospy.Publisher('/center_rgb', String, queue_size = 1)
